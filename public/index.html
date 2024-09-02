@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        function submitForm() {
+            let form = document.getElementById('form')
+            let data = new FormData(form)
+            fetch('submit', {
+                method: 'POST',
+                body: data
+            }).then(res => {
+                res.json().then(result => {
+                    let alert = document.getElementById('alert')
+                    alert.children[0].innerText = `Upload success!\nName: ${result.Name}\nImage: ${result.Image}`
+                    alert.children[1].src = `/uploads/${result.Image}`
+                    alert.classList.remove('d-none')
+                    form.reset()
+                })
+            })
+            return false
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-3">
+            <form id="form" onsubmit="return submitForm()">
+                <div class="mb-3 col-12">
+                    <label class="form-label" for="name">Name</label>
+                    <input id="name" name="Name" class="form-control form-control-sm" required />
+                </div>
+                <div class="mb-3 col-12">
+                    <label class="form-label" for="image">Image</label>
+                    <input type="file" accept="image/*" id="image" name="Image" class="form-control form-control-sm" required />
+                </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-primary">Submit</button>
+                </div>
+            </form>
+            <div id="alert" class="alert alert-success mt-3 d-none">
+                <p></p>
+                <img id="img" width="200px" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>
